@@ -1,3 +1,295 @@
-<h1>
-    Welcome to the California Medium Housing Price Predition Application!
-</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>California Housing Price Prediction</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-1: #fef6e7;
+      --bg-2: #e6f7f3;
+      --panel: #ffffffcc;
+      --text: #1f2937;
+      --muted: #5f6b7a;
+      --accent: #0f766e;
+      --accent-2: #d97706;
+      --border: #d9e6e3;
+      --shadow: 0 18px 40px rgba(15, 118, 110, 0.16);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Space Grotesk", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 15%, #ffd9a0 0%, transparent 30%),
+        radial-gradient(circle at 90% 20%, #9ee7de 0%, transparent 34%),
+        linear-gradient(125deg, var(--bg-1), var(--bg-2));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .page {
+      width: min(980px, 100%);
+      display: grid;
+      grid-template-columns: 1.1fr 1.3fr;
+      gap: 22px;
+      animation: fade-in 0.8s ease-out;
+    }
+
+    .card {
+      background: var(--panel);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .intro {
+      padding: 34px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      width: fit-content;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      background: #ccfbf1;
+      color: #115e59;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Fraunces", serif;
+      font-size: clamp(1.85rem, 3vw, 2.6rem);
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+    }
+
+    .subtext {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.6;
+      max-width: 32ch;
+    }
+
+    .form-wrap {
+      padding: 24px;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 0.83rem;
+      color: #304252;
+      font-weight: 600;
+    }
+
+    .field input {
+      width: 100%;
+      border: 1px solid #c9ddda;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 11px 12px;
+      font-size: 0.93rem;
+      font-family: inherit;
+      color: var(--text);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .field input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .actions {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .btn {
+      border: none;
+      background: linear-gradient(90deg, var(--accent), #0d9488);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 0.96rem;
+      font-weight: 700;
+      border-radius: 12px;
+      padding: 12px 18px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 10px 16px rgba(13, 148, 136, 0.22);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .prediction {
+      margin-top: 16px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: #fff8ec;
+      border: 1px solid #fde4c4;
+      color: #8a4b08;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      animation: rise 0.35s ease-out;
+    }
+
+    .hint {
+      color: #486171;
+      font-size: 0.82rem;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 860px) {
+      .page {
+        grid-template-columns: 1fr;
+      }
+
+      .intro {
+        padding: 28px 22px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      body {
+        padding: 14px;
+      }
+
+      .form-wrap {
+        padding: 18px;
+      }
+
+      form {
+        grid-template-columns: 1fr;
+      }
+
+      .actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="intro card">
+      <span class="eyebrow">Machine Learning Demo</span>
+      <h1>California House Price Prediction</h1>
+      <p class="subtext">
+        Enter neighborhood and housing metrics to estimate median home value with your trained model.
+      </p>
+      <p class="hint">Tip: All fields should be numeric values.</p>
+    </section>
+
+    <section class="form-wrap card">
+      <form action="{{ url_for('predict') }}" method="post">
+        <div class="field">
+          <label for="MedInc">Median Income</label>
+          <input id="MedInc" type="number" step="any" name="MedInc" placeholder="e.g. 8.32" required>
+        </div>
+
+        <div class="field">
+          <label for="HouseAge">House Age</label>
+          <input id="HouseAge" type="number" step="any" name="HouseAge" placeholder="e.g. 29" required>
+        </div>
+
+        <div class="field">
+          <label for="AveRooms">Average Rooms</label>
+          <input id="AveRooms" type="number" step="any" name="AveRooms" placeholder="e.g. 5.6" required>
+        </div>
+
+        <div class="field">
+          <label for="AveBedrms">Average Bedrooms</label>
+          <input id="AveBedrms" type="number" step="any" name="AveBedrms" placeholder="e.g. 1.1" required>
+        </div>
+
+        <div class="field">
+          <label for="Population">Population</label>
+          <input id="Population" type="number" step="any" name="Population" placeholder="e.g. 1200" required>
+        </div>
+
+        <div class="field">
+          <label for="AveOccup">Average Occupancy</label>
+          <input id="AveOccup" type="number" step="any" name="AveOccup" placeholder="e.g. 2.9" required>
+        </div>
+
+        <div class="field">
+          <label for="Latitude">Latitude</label>
+          <input id="Latitude" type="number" step="any" name="Latitude" placeholder="e.g. 34.22" required>
+        </div>
+
+        <div class="field">
+          <label for="Longitude">Longitude</label>
+          <input id="Longitude" type="number" step="any" name="Longitude" placeholder="e.g. -118.4" required>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn">Predict Price</button>
+        </div>
+      </form>
+
+      {% if prediction_text %}
+      <div class="prediction">{{ prediction_text }}</div>
+      {% endif %}
+    </section>
+  </main>
+</body>
+</html>
