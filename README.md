@@ -190,3 +190,30 @@ docker run -p 5000:5000 -e PORT=5000 california-housing-ml
 `-- README.md
 ```
 
+## Hosted on GitHub (Packages)
+
+GitHub Pages does **not** support running server-side applications (like Python/Flask) directly. Instead, this project uses GitHub Actions to automatically build and host the finished Docker Image via **GitHub Container Registry (GHCR)**.
+
+This setup prevents needing a third-party paid service simply to host the image. Any user or server can pull down the pre-built environment from GitHub without having to worry about missing PIP dependencies or incompatible environments.
+
+### Automated CI/CD Setup
+
+There is a CI/CD workflow at `.github/workflows/main.yaml` with two jobs:
+
+- `ci`: installs dependencies and unconditionally runs the smoke testing framework (`python -m unittest discover -s tests -p "test_*.py"`) validation.
+- `publish`: runs only on `main` branch pushes after a successful `ci` check. It logs into GHCR, builds the container image, and pushes it up as the latest release, accessible within the repository's `Packages` tab.
+
+No external secrets or API keys are required; it natively relies on the `GITHUB_TOKEN` secret built into GitHub Actions.
+
+### Deployment Behavior 
+
+- Pull requests to `main`: run CI checks only (no Docker image publish)
+- Pushes to `main`: run CI, then automatically publish the fresh artifact to GHCR
+- Manual trigger: use **Actions -> CI and Publish to GHCR -> Run workflow**
+
+### Local Smoke Test Command
+
+```bash
+python -m unittest discover -s tests -p "test_*.py"
+```
+
